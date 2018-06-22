@@ -11,7 +11,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 
 @Configuration
-@MapperScan("com.viewhigh.path.**")
+@MapperScan("com.open.mis.**")
 public class DataSourceConfiguration {
 	
 	@Value("${jdbc.driver}")
