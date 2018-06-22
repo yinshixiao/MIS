@@ -1,6 +1,8 @@
 package com.open.mis.modules.login.controller;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.open.mis.modules.login.entity.Role;
 import com.open.mis.modules.login.entity.User;
 import com.open.mis.modules.login.service.LoginService;
 import com.open.mis.util.CommonResult;
@@ -27,9 +30,12 @@ public class LoginController {
 		if(null==user) {
 			return new CommonResult(100,"用户名或密码错误");
 		}
-		
+		List<Role> roleList = loginService.getRoleListByUserCode(userCode);
+		if(roleList.isEmpty()) {
+			return new CommonResult(100,"用户未分配角色");
+		}
 		session.setAttribute("user", user);
-		return new CommonResult();
+		return new CommonResult(roleList);
 	}
 	
 	

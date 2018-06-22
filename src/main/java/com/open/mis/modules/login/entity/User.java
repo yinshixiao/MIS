@@ -1,5 +1,7 @@
 package com.open.mis.modules.login.entity;
 
+
+/*用户表sys_user*/
 public class User {
 
 	private String userCode;
