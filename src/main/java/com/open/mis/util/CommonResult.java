@@ -2,7 +2,7 @@ package com.open.mis.util;
 
 public class CommonResult {
 
-	private Object date;
+	private Object data;
 	
 	private String msg;
 	
@@ -18,8 +18,8 @@ public class CommonResult {
 	}
 	
 	
-	public CommonResult(Object date) {
-		this.date = date;
+	public CommonResult(Object data) {
+		this.data = data;
 		this.msg = "操作成功";
 		this.state = 200;
 	}
@@ -37,13 +37,16 @@ public class CommonResult {
 	
 	
 	
-	public Object getDate() {
-		return date;
+	
+	public Object getData() {
+		return data;
 	}
 
-	public void setDate(Object date) {
-		this.date = date;
+
+	public void setData(Object data) {
+		this.data = data;
 	}
+
 
 	public String getMsg() {
 		return msg;

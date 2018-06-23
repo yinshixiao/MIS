@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>登陆</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="cache-control" content="no-cache" />
 		<meta http-equiv="pragma" content="no-cache" />
@@ -13,13 +13,32 @@
 		<script type="text/javascript" src="/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 		<script>
 			$(function(){
+				$('#dlg').dialog('close');
 				$("#login").click(function(){
 					$('#ff').form('submit',{
 						url:"/login/doLogin",
 						method:"post",
 						success:function(response){
-							console.info(response);
-							$('#dlg').dialog('open');
+							response=JSON.parse(response);
+							if(response.state==200){
+								$('#roleSelect').combobox({    
+									data:response.data,    
+								    valueField:'roleCode',    
+								    textField:'roleName',
+								    onSelect:function(record){
+								    	$.post("/login/selectRole",{roleCode:record.roleCode},function(result){
+								    	   	if(result.state==200){
+								    	   		window.location.href="/html/system/system.html";
+								    	   	}else{
+								    	   		alert(result.msg);
+								    	   	}
+								    	});
+								    }
+								});
+								$('#dlg').dialog('open');
+							}else{
+								alert(response.msg);
+							}
 						}
 					});
 				});
@@ -51,14 +70,12 @@
 						<a href="javascript:void(0)" class="easyui-linkbutton" id="login" style="width:80px">登陆</a>
 						<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">清除</a>
 					</div>
-					
-					
-					
 				</div>
 			</div>
 			
-			<div id="dlg" class="easyui-dialog" title="选择角色" data-options="iconCls:'icon-save'" style="width:400px;height:200px;padding:10px;display:none">
-				The dialog content.
+			<div id="dlg" class="easyui-dialog" title="选择角色" data-options="iconCls:'icon-save'" style="width:400px;height:200px;padding:10px">
+				<select class="easyui-combobox" id="roleSelect"  name ="roleSelect"  label="选择角色" style="width:100%">
+				</select>
 			</div>
 			
 	</body>

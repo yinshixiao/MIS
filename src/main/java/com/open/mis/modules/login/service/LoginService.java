@@ -1,11 +1,8 @@
 package com.open.mis.modules.login.service;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.open.mis.modules.login.dao.LoginDao;
 import com.open.mis.modules.login.entity.Role;
 import com.open.mis.modules.login.entity.User;
