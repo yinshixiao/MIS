@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 		<script>
+		
 			function fromToJson(fromId){
 				var para = new Object();
 				var form = $("#"+fromId);
@@ -19,20 +20,17 @@
 					var node = inputList[i];
 					var node = $(node);
 					if(node.attr("type")=="hidden"){
-						//console.log(node.attr("name"));
-						//console.log(node.attr("value"));
 						para[node.attr("name")]=node.attr("value");
 					}
 					
 				}
-				console.log(para);
 				return para;
 			}
-
+		
+			
 			$(function(){
 
 					$("#grid").datagrid({
-						//url:'datagrid_data.json', 
 						singleSelect:true,
 						fit:true,
 						fitColumns:true,
@@ -46,8 +44,14 @@
 					    pagination:true,
 					    pageSize:10,
 					    pageList:[5,10,15,20,30,100]
+						/*
+					    onClickRow: function(index, row){
+					    	var userId = row.user_id;
+					    }
+					    */
 				    });
 
+					//查询
 					$("#search").bind("click",function(){
 						
 						$("#grid").datagrid({
@@ -61,13 +65,31 @@
 									alert(response.msg);
 								}
 							}
-
-
 						});
-						
-					
 					});
-
+					//添加用户
+					$("#addUser").click(function(){
+						
+					});
+					//修改用户
+					$("#editUser").click(function(){
+						var rows = $('#grid').datagrid('getSelections');
+						
+						$("#edit_user_code").textbox("setValue",rows[0].user_id)
+						$("#edit_user_code").textbox("setValue",rows[0].user_code)
+						$("#edit_user_name").textbox("setValue",rows[0].user_name)
+						
+						$("#editUserDialog").dialog({    
+						    title: '修改用户',    
+						    width: 400,    
+						    height: 200,    
+						    closed: false,    
+						    cache: false,    
+						    //href: 'get_content.php',    
+						    modal: true   
+						});  
+					});
+					
 			});
 			
 		</script>
@@ -83,6 +105,7 @@
 						<td width="20%"  align="left" >
 							<input class="easyui-textbox"  name="user_code" style="width:200px"  />
 						</td>
+					
 						<td align="right" width="20%">用户姓名:</td>
 						<td width="20%"  align="left">
 							<input class="easyui-textbox"  name="user_name" style="width:200px" />
@@ -92,7 +115,12 @@
 				</table>
 
 			</form>
-			<div style="text-align:right;">
+			<div style="text-align:left;width:40%;float:left">
+				<a href="#" id="addUser" class="easyui-linkbutton"	 data-options="iconCls:'icon-add'" >添加</a>
+				<a href="#" id="editUser" class="easyui-linkbutton"	 data-options="iconCls:'icon-edit'" >修改</a>
+				<a href="#" id="addUser" class="easyui-linkbutton"	 data-options="iconCls:'icon-cancel'" >停用</a>
+			</div>
+			<div style="text-align:right;width:40%;float:right">
 				<a href="#" id="search" class="easyui-linkbutton"	 data-options="iconCls:'icon-search'"  >查询</a>
 			</div>
 
@@ -102,7 +130,27 @@
 		<div region="center" border="false">
 			<table id="grid" ></table>
 		</div>
-		
+		<!-- 用户信息修改页 -->
+		<div id="editUserDialog">
+			<form>
+				<table width="100%">
+					<tr>
+						<div style="display:none"><input class="easyui-textbox" id="edit_user_id"  name="edit_user_id" style="width:200px"  /></div>
+						<td align="right" width="20%">用户编码:</td>
+						<td width="20%"  align="left" >
+							<input class="easyui-textbox" id="edit_user_code"  name="edit_user_code" style="width:200px"  />
+						</td>
+					<tr>
+					</tr>
+						<td align="right" width="20%">用户姓名:</td>
+						<td width="20%"  align="left">
+							<input class="easyui-textbox" id="edit_user_name"  name="edit_user_name" style="width:200px" />
+						</td>
+						<td width="20%" ></td>
+					</tr>
+				</table>
+			</form>
+		</div> 
 		
 
 	</body>

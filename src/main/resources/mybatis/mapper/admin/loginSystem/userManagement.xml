@@ -11,7 +11,7 @@
 				select count(1) as total
 			</when>
 			<otherwise>
-				select user_code ,user_name 
+				select user_id,user_code ,user_name 
 			</otherwise>
 		</choose>
 				from sys_user  

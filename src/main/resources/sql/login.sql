@@ -5,6 +5,7 @@ create table sys_user(
 	user_code varchar(20) not null,
 	user_name varchar(20) not null,
 	password varchar(50) not null,
+	is_enabled varchar(1) default 'N', 
 	unique (user_code)
 );
 
