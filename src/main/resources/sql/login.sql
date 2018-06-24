@@ -9,6 +9,19 @@ create table sys_user(
 );
 
 insert into sys_user(user_code,user_name,password) values('admin','系统管理员',1);
+insert into sys_user(user_code,user_name,password) values('test1','测试用户1',1);
+insert into sys_user(user_code,user_name,password) values('test2','测试用户2',1);
+insert into sys_user(user_code,user_name,password) values('test3','测试用户3',1);
+insert into sys_user(user_code,user_name,password) values('test4','测试用户4',1);
+insert into sys_user(user_code,user_name,password) values('test5','测试用户5',1);
+insert into sys_user(user_code,user_name,password) values('test6','测试用户6',1);
+insert into sys_user(user_code,user_name,password) values('test7','测试用户7',1);
+insert into sys_user(user_code,user_name,password) values('test8','测试用户8',1);
+insert into sys_user(user_code,user_name,password) values('test9','测试用户9',1);
+insert into sys_user(user_code,user_name,password) values('test10','测试用户10',1);
+insert into sys_user(user_code,user_name,password) values('test11','测试用户11',1);
+insert into sys_user(user_code,user_name,password) values('test12','测试用户12',1);
+
 
 /*角色表*/
 drop table if exists sys_role; 
@@ -41,7 +54,7 @@ create table module_node(
 	node_code  varchar(20) not null,
 	node_text varchar(30) not null
 );
-insert into module_node(role_code,node_code,node_text)values('admin','userManagement','用户管理');
+insert into module_node(role_code,node_code,node_text)values('admin','loginSystem','用户管理');
 
 
 
@@ -56,10 +69,10 @@ create table module_page(
 	page_url varchar(400) not null
 );
 insert into module_page(role_code,node_code,page_text,page_url)
-values('admin','userManagement','角色管理','/html/modules/admin/userManagement/roleManagement.html');
+values('admin','loginSystem','角色管理','/html/admin/loginSystem/roleManagement.html');
 
 insert into module_page(role_code,node_code,page_text,page_url)
-values('admin','userManagement','人员管理','/html/modules/admin/userManagement/userManagement.html');
+values('admin','loginSystem','人员管理','/html/admin/loginSystem/userManagement.html');
 
 
 

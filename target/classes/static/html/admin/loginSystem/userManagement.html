@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>收费项目</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<link rel="stylesheet" type="text/css" href="/js/easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="/js/easyui/themes/icon.css">
+		<script type="text/javascript" src="/js/easyui/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+		<script>
+			function fromToJson(fromId){
+				var para = new Object();
+				var form = $("#"+fromId);
+				var inputList = form.find("input");
+				for(var i =0;i<inputList.length;i++){
+					var node = inputList[i];
+					var node = $(node);
+					if(node.attr("type")=="hidden"){
+						//console.log(node.attr("name"));
+						//console.log(node.attr("value"));
+						para[node.attr("name")]=node.attr("value");
+					}
+					
+				}
+				console.log(para);
+				return para;
+			}
+
+			$(function(){
+
+					$("#grid").datagrid({
+						//url:'datagrid_data.json', 
+						singleSelect:true,
+						fit:true,
+						fitColumns:true,
+						collapsible:true, 
+						striped:true,
+						//rownumbers:true, 
+					    columns:[[    
+					        {field:'user_code',title:'用户编码',width:100,align:'left'},    
+					        {field:'user_name',title:'用户姓名',width:100,align:'left'}
+					    ]],
+					    pagination:true,
+					    pageSize:10,
+					    pageList:[5,10,15,20,30,100]
+				    });
+
+					$("#search").bind("click",function(){
+						
+						$("#grid").datagrid({
+							url:'/admin/userManagement/getUsers',
+							method:"POST",
+							queryParams: fromToJson("searchForm"),
+							loadFilter: function(response){
+								if (response.state==200){
+									return response.data;
+								} else {
+									alert(response.msg);
+								}
+							}
+
+
+						});
+						
+					
+					});
+
+			});
+			
+		</script>
+	</head>
+	<body class="easyui-layout">
+		
+		<div region="north" border="false"   style="width:100%;height:80px;margin-top: 20px;" >
+			<form id ="searchForm" method="post">
+				<table width="100%">
+					
+					<tr>
+						<td align="right" width="20%">用户编码:</td>
+						<td width="20%"  align="left" >
+							<input class="easyui-textbox"  name="user_code" style="width:200px"  />
+						</td>
+						<td align="right" width="20%">用户姓名:</td>
+						<td width="20%"  align="left">
+							<input class="easyui-textbox"  name="user_name" style="width:200px" />
+						</td>
+						<td width="20%" ></td>
+					</tr>
+				</table>
+
+			</form>
+			<div style="text-align:right;">
+				<a href="#" id="search" class="easyui-linkbutton"	 data-options="iconCls:'icon-search'"  >查询</a>
+			</div>
+
+		</div>
+
+
+		<div region="center" border="false">
+			<table id="grid" ></table>
+		</div>
+		
+		
+
+	</body>
+</html>
