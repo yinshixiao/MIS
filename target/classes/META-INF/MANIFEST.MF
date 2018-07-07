@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Implementation-Title: MIS
-Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Version: 1
 Built-By: Administrator
 Implementation-Vendor-Id: com.open
 Build-Jdk: 1.8.0_111

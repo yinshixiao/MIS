@@ -23,7 +23,7 @@ public class UserManagementService {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 		result.put("rows", userManagementDao.getUsers(map));
 		map.put("isTotal", "yes");
-		result.put("total",userManagementDao.getUsers(map).get(0).get("total"));
+		result.put("total",userManagementDao.getUsers(map).get(0).get("TOTAL"));
 		return result;
 	}
 }

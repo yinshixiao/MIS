@@ -8,9 +8,4 @@ public interface UserManagementDao {
 
 	List<Map<String,Object>> getUsers(Map<String,Object> map);
 	
-	
-	
-	
-	
-	
 }

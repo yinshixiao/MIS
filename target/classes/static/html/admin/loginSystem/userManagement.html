@@ -36,10 +36,11 @@
 						fitColumns:true,
 						collapsible:true, 
 						striped:true,
-						//rownumbers:true, 
+						rownumbers:true, 
 					    columns:[[    
-					        {field:'user_code',title:'用户编码',width:100,align:'left'},    
-					        {field:'user_name',title:'用户姓名',width:100,align:'left'}
+					    	 {field:'ck',checkbox:true},
+					        {field:'USER_CODE',title:'用户编码',width:100,align:'left'},    
+					        {field:'USER_NAME',title:'用户姓名',width:100,align:'left'}
 					    ]],
 					    pagination:true,
 					    pageSize:10,
@@ -69,23 +70,22 @@
 					});
 					//添加用户
 					$("#addUser").click(function(){
-						
+						alert(1);
 					});
 					//修改用户
 					$("#editUser").click(function(){
 						var rows = $('#grid').datagrid('getSelections');
-						
-						$("#edit_user_code").textbox("setValue",rows[0].user_id)
-						$("#edit_user_code").textbox("setValue",rows[0].user_code)
-						$("#edit_user_name").textbox("setValue",rows[0].user_name)
+						console.log(rows);
+						$("#edit_user_code").textbox("setValue",rows[0].USER_ID)
+						$("#edit_user_code").textbox("setValue",rows[0].USER_CODE)
+						$("#edit_user_name").textbox("setValue",rows[0].USER_NAME)
 						
 						$("#editUserDialog").dialog({    
 						    title: '修改用户',    
 						    width: 400,    
 						    height: 200,    
 						    closed: false,    
-						    cache: false,    
-						    //href: 'get_content.php',    
+						    cache: false,
 						    modal: true   
 						});  
 					});
@@ -103,12 +103,12 @@
 					<tr>
 						<td align="right" width="20%">用户编码:</td>
 						<td width="20%"  align="left" >
-							<input class="easyui-textbox"  name="user_code" style="width:200px"  />
+							<input class="easyui-textbox"  name="USER_CODE" style="width:200px"  />
 						</td>
 					
 						<td align="right" width="20%">用户姓名:</td>
 						<td width="20%"  align="left">
-							<input class="easyui-textbox"  name="user_name" style="width:200px" />
+							<input class="easyui-textbox"  name="USER_NAME" style="width:200px" />
 						</td>
 						<td width="20%" ></td>
 					</tr>
@@ -130,21 +130,25 @@
 		<div region="center" border="false">
 			<table id="grid" ></table>
 		</div>
+		
+		
 		<!-- 用户信息修改页 -->
-		<div id="editUserDialog">
+		<div style="display:none" id="editUserDialog">
 			<form>
 				<table width="100%">
 					<tr>
-						<div style="display:none"><input class="easyui-textbox" id="edit_user_id"  name="edit_user_id" style="width:200px"  /></div>
+						<div style="display:none">
+							<input class="easyui-textbox" id="edit_user_id"  name="EDIT_USER_ID" style="width:200px"  />
+						</div>
 						<td align="right" width="20%">用户编码:</td>
 						<td width="20%"  align="left" >
-							<input class="easyui-textbox" id="edit_user_code"  name="edit_user_code" style="width:200px"  />
+							<input class="easyui-textbox" id="edit_user_code"  name="EDIT_USER_CODE" style="width:200px"  />
 						</td>
 					<tr>
 					</tr>
 						<td align="right" width="20%">用户姓名:</td>
 						<td width="20%"  align="left">
-							<input class="easyui-textbox" id="edit_user_name"  name="edit_user_name" style="width:200px" />
+							<input class="easyui-textbox" id="edit_user_name"  name="EDIT_USER_NAME" style="width:200px" />
 						</td>
 						<td width="20%" ></td>
 					</tr>

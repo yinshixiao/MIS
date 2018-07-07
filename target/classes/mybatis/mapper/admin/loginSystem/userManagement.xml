@@ -8,19 +8,23 @@
 	<select id="getUsers" resultType="map">
 		<choose>
 			<when test="isTotal == 'yes' ">
-				select count(1) as total
+				SELECT COUNT(1) AS TOTAL
 			</when>
 			<otherwise>
-				select user_id,user_code ,user_name 
+			SELECT * FROM (
+				SELECT USER_ID,USER_CODE ,USER_NAME,ROWNUM AS FN 
 			</otherwise>
 		</choose>
-				from sys_user  
-				where user_code like CONCAT('%',#{user_code},'%')  
-				and user_name like CONCAT('%',#{user_name},'%') 
-		<if test=" isTotal != 'yes'">
-				limit #{start},#{end}
+				FROM SYS_USER  
+				WHERE USER_CODE LIKE '%'||#{USER_CODE}||'%'  
+				AND USER_NAME LIKE '%'||#{USER_NAME}||'%'
+		
+		<if test=" isTotal != 'yes'">	
+				and ROWNUM <![CDATA[ <=  ]]>  #{end}
+			)
+			WHERE  FN > #{start}
 		</if> 
-				 
+		 		 
 	</select>
 	
 	
