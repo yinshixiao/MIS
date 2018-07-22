@@ -27,4 +27,16 @@ public class UserManagementController {
 		return new CommonResult(userManagementService.getUsers(map));
 	}
 	
+	
+	@RequestMapping("/editUser")
+	public CommonResult editUser(@RequestParam Map<String,Object> map) {
+		log.debug(map.toString());
+		return new CommonResult(userManagementService.editUser(map));
+	}
+	
+	@RequestMapping("/addUser")
+	public CommonResult addUser(@RequestParam Map<String,Object> map) {
+		log.debug(map.toString());
+		return new CommonResult(userManagementService.addUser(map));
+	}
 }

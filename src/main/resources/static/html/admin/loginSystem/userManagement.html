@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>收费项目</title>
+		<title>用户管理</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="cache-control" content="no-cache" />
 		<meta http-equiv="pragma" content="no-cache" />
@@ -11,7 +11,7 @@
 		<script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 		<script>
-		
+			/*封装form表单数据为json*/
 			function fromToJson(fromId){
 				var para = new Object();
 				var form = $("#"+fromId);
@@ -22,14 +22,13 @@
 					if(node.attr("type")=="hidden"){
 						para[node.attr("name")]=node.attr("value");
 					}
-					
 				}
 				return para;
 			}
 		
 			
 			$(function(){
-
+					/*表格初始化*/
 					$("#grid").datagrid({
 						singleSelect:true,
 						fit:true,
@@ -38,23 +37,19 @@
 						striped:true,
 						rownumbers:true, 
 					    columns:[[    
-					    	 {field:'ck',checkbox:true},
+					    	{field:'CK',checkbox:true},
 					        {field:'USER_CODE',title:'用户编码',width:100,align:'left'},    
 					        {field:'USER_NAME',title:'用户姓名',width:100,align:'left'}
 					    ]],
 					    pagination:true,
 					    pageSize:10,
 					    pageList:[5,10,15,20,30,100]
-						/*
-					    onClickRow: function(index, row){
-					    	var userId = row.user_id;
-					    }
-					    */
 				    });
 
-					//查询
+					
+					
+					//查询按钮绑定事件
 					$("#search").bind("click",function(){
-						
 						$("#grid").datagrid({
 							url:'/admin/userManagement/getUsers',
 							method:"POST",
@@ -68,27 +63,90 @@
 							}
 						});
 					});
-					//添加用户
+					
+					//添加按钮绑定事件
 					$("#addUser").click(function(){
-						alert(1);
-					});
-					//修改用户
-					$("#editUser").click(function(){
-						var rows = $('#grid').datagrid('getSelections');
-						console.log(rows);
-						$("#edit_user_code").textbox("setValue",rows[0].USER_ID)
-						$("#edit_user_code").textbox("setValue",rows[0].USER_CODE)
-						$("#edit_user_name").textbox("setValue",rows[0].USER_NAME)
-						
-						$("#editUserDialog").dialog({    
-						    title: '修改用户',    
+						$("#addUserDialog").dialog({ 
+							title: '添加用户',    
 						    width: 400,    
 						    height: 200,    
 						    closed: false,    
 						    cache: false,
-						    modal: true   
+						    modal: true,
+						    toolbar:[{
+						    	text:'保存',
+								iconCls:'icon-save',
+						    	handler:function(){
+						    		$('#addForm').form('submit', {    
+						    			 url:"/admin/userManagement/addUser", 
+						    			 success:function(response){   
+										    	response=JSON.parse(response);
+										       	if(response.state==200){
+										    	   if(response.data==1){
+										    		   $.messager.alert('提示','添加成功');
+										    		   $("#editUserDialog").dialog("close");
+										    		   $("#grid").datagrid('reload');
+										    	   }else{
+										    		   $.messager.alert('提示','添加失败');
+										    	   }
+										       	}else{
+										    	   $.messager.alert('警告','操作失败');
+										       	}   
+										 }  
+						    		});
+						    		
+						    	}
+						    }]
+						})
+					});
+					
+					//修改按钮绑定事件
+					$("#editUser").click(function(){
+						var rows = $('#grid').datagrid('getSelections');
+						console.log(rows);
+						$("#edit_user_id").textbox("setValue",rows[0].USER_ID)
+						$("#edit_user_code").textbox("setValue",rows[0].USER_CODE)
+						$("#edit_user_name").textbox("setValue",rows[0].USER_NAME)
+						
+						$("#editUserDialog").dialog({    
+						    
+							
+							title: '修改用户',    
+						    width: 400,    
+						    height: 200,    
+						    closed: false,    
+						    cache: false,
+						    modal: true,
+						    toolbar:[{
+								text:'保存',
+								iconCls:'icon-edit',
+								handler:function(){
+									$('#editForm').form('submit', {    
+									    url:"/admin/userManagement/editUser",   
+									    success:function(response){   
+									    	response=JSON.parse(response);
+									       	if(response.state==200){
+									    	  //alert(response.data);
+									    	   	if(response.data==1){
+									    		  	 $("#editUserDialog").dialog("close");
+									    		  	 $("#grid").datagrid('reload');
+									    	   	}else{
+									    		 	  $.messager.alert('提示','修改失败');
+									    	  	 }
+									       }else{
+									    	   $.messager.alert('警告','操作失败');
+									       }   
+									    }    
+									});
+								}
+							}]
+						
+						
 						});  
 					});
+					
+					
+					
 					
 			});
 			
@@ -96,6 +154,8 @@
 	</head>
 	<body class="easyui-layout">
 		
+		
+		<!-- 查询条件表单 -->
 		<div region="north" border="false"   style="width:100%;height:80px;margin-top: 20px;" >
 			<form id ="searchForm" method="post">
 				<table width="100%">
@@ -126,15 +186,49 @@
 
 		</div>
 
-
+		<!-- 主表格 -->
 		<div region="center" border="false">
 			<table id="grid" ></table>
 		</div>
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- 一些隐藏的对话框 -->
+		
+		
+		<!-- 新增用户页 -->
+		<div style="display:none" id="addUserDialog">
+			<form id ="addForm" method="post" >
+				<table width="100%">
+					<tr>
+						<td align="right" width="20%">用户编码:</td>
+						<td width="20%"  align="left" >
+							<input class="easyui-textbox" id="add_user_code"  name="ADD_USER_CODE" style="width:200px"  />
+						</td>
+					<tr>
+					</tr>
+						<td align="right" width="20%">用户姓名:</td>
+						<td width="20%"  align="left">
+							<input class="easyui-textbox" id="add_user_name"  name="ADD_USER_NAME" style="width:200px" />
+						</td>
+						<td width="20%" ></td>
+					</tr>
+				</table> 
+			</form>
+		</div>
+		
+		
+		
 		<!-- 用户信息修改页 -->
 		<div style="display:none" id="editUserDialog">
-			<form>
+			<form id ="editForm" method="post" >   
 				<table width="100%">
 					<tr>
 						<div style="display:none">

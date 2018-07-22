@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.open.mis.modules.admin.loginSystem.userManagement.dao.UserManagementDao;
+import com.open.mis.util.CommonResult;
 
 @Service
 public class UserManagementService {
@@ -25,5 +27,13 @@ public class UserManagementService {
 		map.put("isTotal", "yes");
 		result.put("total",userManagementDao.getUsers(map).get(0).get("TOTAL"));
 		return result;
+	}
+	
+	public Integer editUser(@RequestParam Map<String,Object> map) {
+		return userManagementDao.editUser(map);
+	}
+	
+	public Integer addUser(@RequestParam Map<String,Object> map) {
+		return userManagementDao.addUser(map);
 	}
 }

@@ -20,12 +20,28 @@
 				AND USER_NAME LIKE '%'||#{USER_NAME}||'%'
 		
 		<if test=" isTotal != 'yes'">	
-				and ROWNUM <![CDATA[ <=  ]]>  #{end}
+				AND ROWNUM <![CDATA[ <=  ]]>  #{end}
+				ORDER BY USER_CODE
 			)
 			WHERE  FN > #{start}
+			
 		</if> 
 		 		 
 	</select>
 	
+	<update id="editUser" >
+		UPDATE SYS_USER
+		SET USER_CODE = #{EDIT_USER_CODE},
+		USER_NAME = #{EDIT_USER_NAME}
+		WHERE USER_ID = #{EDIT_USER_ID}
+	</update>
+	
+	<insert id="addUser" >
+		INSERT INTO SYS_USER(
+			USER_ID,USER_CODE,USER_NAME,PASSWORD
+		) VALUES(
+			SYS_USER_ID.NEXTVAL,#{ADD_USER_CODE},#{ADD_USER_NAME},1
+		)
+	</insert>
 	
 </mapper>
