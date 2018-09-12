@@ -24,69 +24,56 @@
 				rownumbers:true, 
 			    columns:[[    
 			    	{field:'CK',checkbox:true},
-			        {field:'user_code',title:'用户编码',width:100,align:'center'},    
-			        {field:'user_name',title:'用户姓名',width:100,align:'center'},    
-			        {field:'is_stop_name',title:'是否停用',width:100,align:'center'}
+			        {field:'role_code',title:'角色编码',width:100,align:'center'},    
+			        {field:'role_name',title:'角色名称',width:100,align:'center'}
 			    ]],
-			    pagination:true,
-			    pageSize:10,
-			    pageList:[5,10,15,20,30,100]
-			});
-
-				
-					
-			/*
-				查询按钮
-			*/
-			$("#search_btn").bind("click",function(){
-				$("#grid").datagrid({
-					url:'/admin/userManagement/getUsers',
-					method:"POST",
-					queryParams: parent.getFormJson($("#search_form")),
-					loadFilter: function(response){
-						if (response.state==200){
-							return response.data;
-						}else{
-							alert(response.msg);
-						}
+			    url:'/admin/roleManagement/getRoles',
+			    toolbar:[{
+			    	text:'查询',
+					iconCls:'icon-search',
+					handler: function(){ 
+						$("#grid").datagrid('reload');
 					}
-				});
+			    },'-',{
+			    	text:'新增',
+					iconCls:'icon-add',
+					handler: function(){ 
+						$("#add_dialog").dialog({ 
+							title: '添加用户',    
+							width: 400,    
+							height: 200,    
+							closed: false,    
+							modal: true,
+							buttons:[{
+								text:'保存',
+								iconCls:'icon-save',
+								handler:function(){
+									$('#add_form').form('submit', {    
+										 url:"/admin/roleManagement/insertRole", 
+										 success:function(response){   
+												response=JSON.parse(response);
+												if(response.state==200){
+												   if(response.data==1){
+													   $.messager.alert('提示','添加成功');
+													   $("#add_dialog").dialog("close");
+													   $("#grid").datagrid('reload');
+												   }else{
+													   $.messager.alert('提示','添加失败');
+												   }
+												}else{
+												   $.messager.alert('警告','操作失败');
+												}   
+										 }  
+									});
+									
+								}
+							}]
+						})
+					}
+			    }]
 			});
-					
-			//添加按钮绑定事件
-			$("#add_btn").click(function(){
-				$("#add_dialog").dialog({ 
-					title: '添加用户',    
-					width: 400,    
-					height: 200,    
-					closed: false,    
-					modal: true,
-					buttons:[{
-						text:'保存',
-						iconCls:'icon-save',
-						handler:function(){
-							$('#add_form').form('submit', {    
-								 url:"/admin/userManagement/insertUser", 
-								 success:function(response){   
-										response=JSON.parse(response);
-										if(response.state==200){
-										   if(response.data==1){
-											   $.messager.alert('提示','添加成功');
-											   $("#add_dialog").dialog("close");
-											   $("#grid").datagrid('reload');
-										   }else{
-											   $.messager.alert('提示','添加失败');
-										   }
-										}else{
-										   $.messager.alert('警告','操作失败');
-										}   
-								 }  
-							});
-							
-						}
-					}]
-				})
-			});
+			
+		
 					
 			//修改按钮绑定事件
 			$("#edit_user").click(function(){
@@ -138,61 +125,26 @@
 		</script>
 	</head>
 	<body class="easyui-layout">
-		
-		
-		<!-- 查询条件表单 -->
-		<div region="north" border="false"   style="width:100%;height:80px;margin-top: 20px;" >
-			<form id ="search_form" method="post" class="easyui-form">
-				<table width="100%">
-					<tr>
-						<td align="right" width="20%">用户编码:</td>
-						<td width="20%"  align="left" >
-							<input class="easyui-textbox"  name="user_code" style="width:200px"  />
-						</td>
-					
-						<td align="right" width="20%">用户姓名:</td>
-						<td width="20%"  align="left">
-							<input class="easyui-textbox"  name="user_name" style="width:200px" />
-						</td>
-						<td width="20%" ></td>
-					</tr>
-				</table>
-
-			</form>
-			<div style="text-align:left;width:40%;float:left">
-				<a href="#" id="add_btn" class="easyui-linkbutton"	  data-options="iconCls:'icon-add'" >添加</a>
-				<a href="#" id="edit_user" class="easyui-linkbutton"  data-options="iconCls:'icon-edit'" >修改</a>
-				<a href="#" id="send_role_btn" class="easyui-linkbutton"	  data-options="iconCls:'icon-cancel'" >分配角色</a>
-			</div>
-			<div style="text-align:right;width:40%;float:right">
-				<a href="#" id="search_btn" class="easyui-linkbutton"	 data-options="iconCls:'icon-search'"  >查询</a>
-			</div>
-
-		</div>
-
 		<!-- 主表格 -->
 		<div region="center" border="false">
 			<table id="grid" ></table>
 		</div>
-		
-		
-		
-		
+
 		<!-- 一些隐藏的对话框 -->
-		<!-- 新增用户页 -->
+		<!-- 新增角色页 -->
 		<div style="display:none" id="add_dialog">
 			<form id ="add_form" method="post" >
 				<table width="100%">
 					<tr>
-						<td align="right" width="20%">用户编码:</td>
+						<td align="right" width="20%">角色编码:</td>
 						<td width="20%"  align="left" >
-							<input class="easyui-textbox"   name="user_code" style="width:200px"  />
+							<input class="easyui-textbox"   name="role_code" style="width:200px"  />
 						</td>
 					<tr>
 					</tr>
-						<td align="right" width="20%">用户姓名:</td>
+						<td align="right" width="20%">角色名称:</td>
 						<td width="20%"  align="left">
-							<input class="easyui-textbox"   name="user_name" style="width:200px" />
+							<input class="easyui-textbox"   name="role_name" style="width:200px" />
 						</td>
 						<td width="20%" ></td>
 					</tr>
@@ -200,38 +152,27 @@
 			</form>
 		</div>
 		
-		<!-- 用户信息修改页 -->
+		<!-- 角色信息修改页 -->
 		<div style="display:none" id="edit_dialog">
 			<form id ="edit_form" method="post" >   
 				<table width="100%">
 					<tr>
 						<div style="display:none">
-							<input class="easyui-textbox" id="edit_user_id"  name="user_id" style="width:200px"  />
+							<input class="easyui-textbox" id="edit_role_id"  name="role_id" style="width:200px"  />
 						</div>
 						<td align="right" width="20%">用户编码:</td>
 						<td width="20%"  align="left" >
-							<input class="easyui-textbox" id="edit_user_code"  name="user_code" style="width:200px"  />
+							<input class="easyui-textbox" id="edit_role_code"  name="role_code" style="width:200px"  />
 						</td>
 					<tr>
 					</tr>
 						<td align="right" width="20%">用户姓名:</td>
 						<td width="20%"  align="left">
-							<input class="easyui-textbox" id="edit_user_name"  name="user_name" style="width:200px" />
+							<input class="easyui-textbox" id="edit_role_name"  name="role_name" style="width:200px" />
 						</td>
 						<td width="20%" ></td>
 					</tr>
-					
-					</tr>
-						<td align="right" width="20%">是否停用:</td>
-						<td width="20%"  align="left">
-							<select class="easyui-combobox" panelHeight="auto" id="edit_is_stop" name="is_stop" style="width:200px">
-								<option value="Y">是</option>
-								<option value="N">否</option>
-							</select>
-						</td>
-						<td width="20%" ></td>
-					</tr>
-					
+
 				</table>
 			</form>
 		</div> 
