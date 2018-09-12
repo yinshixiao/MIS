@@ -30,14 +30,6 @@ public class CommonResult {
 	}
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	public Object getData() {
 		return data;
 	}

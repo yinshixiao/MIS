@@ -26,19 +26,22 @@ public class SessionFactoryConfiguration {
 	private String entityPackage;
 	
 	@Autowired
-	@Qualifier("dataSource")
-	private DataSource dataSource;
-	
-	
+	@Qualifier("masteDataSource")
+	private DataSource masteDataSource;
 
 	@Bean(name="sqlSessionFactoryBean")
 	public SqlSessionFactoryBean createSqlSessionFactoryBean() throws IOException {
 		SqlSessionFactoryBean sqlSessionFactoryBean =new SqlSessionFactoryBean();
+		
+		//mybatis配置文件
 		sqlSessionFactoryBean.setConfigLocation(new ClassPathResource(mybatisConfigFilePath));
 		PathMatchingResourcePatternResolver resoulver = new PathMatchingResourcePatternResolver();
+		//映射文件
 		String packageSearchPath = PathMatchingResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + mapperPath;
 		sqlSessionFactoryBean.setMapperLocations(resoulver.getResources(packageSearchPath));
-		sqlSessionFactoryBean.setDataSource(dataSource);
+		//数据源
+		sqlSessionFactoryBean.setDataSource(masteDataSource);
+		//实体类
 		sqlSessionFactoryBean.setTypeAliasesPackage(entityPackage);
 		return sqlSessionFactoryBean;
 	}
