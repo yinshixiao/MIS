@@ -13,7 +13,7 @@ import com.alibaba.druid.pool.DruidDataSource;
  * 配置数据源，这里用的是alibaba的连接池， 以后也可以配置多数据源，命名为不同的source
  */
 @Configuration
-@MapperScan("com.viewhigh.dataExchange.**")
+@MapperScan("com.open.mis.**")
 public class DataSourceConfiguration {
 
 	@Value("${spring.datasource.driver-class-name}")

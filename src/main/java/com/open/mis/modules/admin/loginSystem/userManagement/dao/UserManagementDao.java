@@ -7,7 +7,7 @@ public interface UserManagementDao {
 	
 	List<Map<String,Object>> getUsers(Map<String,Object> map);
 	
-	Integer editUser(Map<String,Object> map);
+	Integer updateUser(Map<String,Object> map);
 	
-	Integer addUser(Map<String,Object> map);
+	Integer insertUser(Map<String,Object> map);
 }

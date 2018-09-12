@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.open.mis.modules.admin.loginSystem.userManagement.dao.UserManagementDao">
+	
+	<select id="getUsers" resultType="map">
+		<choose>
+			<when test="isTotal == 'yes' ">
+				SELECT COUNT(1) AS total
+			</when>
+			<otherwise>
+			
+				SELECT 
+					user_id,user_code ,user_name,
+					is_stop,
+					case is_stop when 'N' then '否' when 'Y' then '是' else '未知' end  is_stop_name
+			</otherwise>
+		</choose>
+				FROM sys_user  
+				WHERE user_code LIKE concat('%',#{user_code},'%')  
+				AND user_name LIKE concat('%',#{user_name},'%')
+		
+		<if test=" isTotal != 'yes'">	
+				limit #{start},#{end}
+		</if> 
+		 		 
+	</select>
+	
+	<update id="updateUser" >
+		UPDATE sys_user
+		SET user_code = #{user_code},
+		user_name = #{user_name},
+		is_stop = #{is_stop}
+		WHERE user_id = #{user_id}
+	</update>
+	
+	<insert id="insertUser" >
+		INSERT INTO sys_user(
+			user_code,user_name,password
+		) VALUES(
+			#{user_code},#{user_name},1
+		)
+	</insert>
+	
+</mapper>

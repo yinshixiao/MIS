@@ -22,18 +22,22 @@ public class UserManagementService {
 		map.put("start", start);
 		map.put("end", end);
 		
+		//获取明细
 		HashMap<String,Object> result = new HashMap<String,Object>();
 		result.put("rows", userManagementDao.getUsers(map));
+		
+		//获取合计数
 		map.put("isTotal", "yes");
-		result.put("total",userManagementDao.getUsers(map).get(0).get("TOTAL"));
+		result.put("total",userManagementDao.getUsers(map).get(0).get("total"));
+		
 		return result;
 	}
 	
-	public Integer editUser(@RequestParam Map<String,Object> map) {
-		return userManagementDao.editUser(map);
+	public Integer updateUser(@RequestParam Map<String,Object> map) {
+		return userManagementDao.updateUser(map);
 	}
 	
-	public Integer addUser(@RequestParam Map<String,Object> map) {
-		return userManagementDao.addUser(map);
+	public Integer insertUser(@RequestParam Map<String,Object> map) {
+		return userManagementDao.insertUser(map);
 	}
 }

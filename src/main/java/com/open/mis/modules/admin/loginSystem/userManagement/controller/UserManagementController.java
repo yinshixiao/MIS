@@ -28,15 +28,15 @@ public class UserManagementController {
 	}
 	
 	
-	@RequestMapping("/editUser")
-	public CommonResult editUser(@RequestParam Map<String,Object> map) {
+	@RequestMapping("/updateUser")
+	public CommonResult updateUser(@RequestParam Map<String,Object> map) {
 		log.debug(map.toString());
-		return new CommonResult(userManagementService.editUser(map));
+		return new CommonResult(userManagementService.updateUser(map));
 	}
 	
-	@RequestMapping("/addUser")
-	public CommonResult addUser(@RequestParam Map<String,Object> map) {
+	@RequestMapping("/insertUser")
+	public CommonResult insertUser(@RequestParam Map<String,Object> map) {
 		log.debug(map.toString());
-		return new CommonResult(userManagementService.addUser(map));
+		return new CommonResult(userManagementService.insertUser(map));
 	}
 }
