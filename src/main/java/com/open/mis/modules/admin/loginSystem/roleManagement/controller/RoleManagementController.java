@@ -1,5 +1,7 @@
 package com.open.mis.modules.admin.loginSystem.roleManagement.controller;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +36,20 @@ public class RoleManagementController {
 		return new CommonResult(roleManagementDao.updateRole(map));
 	}
 	
-	@RequestMapping("/insertUser")
+	@RequestMapping("/insertRole")
 	public CommonResult insertRole(@RequestParam Map<String,Object> map) {
 		log.debug(map.toString());
 		return new CommonResult(roleManagementDao.insertRole(map));
 	}
+	
+	@RequestMapping("/getMenusByRoleCode")
+	public Object getMenusByRoleCode(@RequestParam(name="role_code") String roleCode) {
+		LinkedList<Object> list = new LinkedList<Object>(); 
+		HashMap<String,String> map =new  HashMap<String,String>();
+		map.put("text", "root");
+		map.put("attributes", "/demo/book/abc");
+		list.add(map);
+		return list;
+	}
+	
 }

@@ -39,7 +39,7 @@
 					iconCls:'icon-add',
 					handler: function(){ 
 						$("#add_dialog").dialog({ 
-							title: '添加用户',    
+							title: '添加角色',    
 							width: 400,    
 							height: 200,    
 							closed: false,    
@@ -51,18 +51,18 @@
 									$('#add_form').form('submit', {    
 										 url:"/admin/roleManagement/insertRole", 
 										 success:function(response){   
-												response=JSON.parse(response);
-												if(response.state==200){
-												   if(response.data==1){
-													   $.messager.alert('提示','添加成功');
-													   $("#add_dialog").dialog("close");
-													   $("#grid").datagrid('reload');
-												   }else{
-													   $.messager.alert('提示','添加失败');
-												   }
-												}else{
-												   $.messager.alert('警告','操作失败');
-												}   
+											response=JSON.parse(response);
+											if(response.state==200){
+											   if(response.data==1){
+												   $.messager.alert('提示','添加成功');
+												   $("#add_dialog").dialog("close");
+												   $("#grid").datagrid('reload');
+											   }else{
+												   $.messager.alert('提示','添加失败');
+											   }
+											}else{
+											   $.messager.alert('警告','操作失败');
+											}   
 										 }  
 									});
 									
@@ -70,56 +70,78 @@
 							}]
 						})
 					}
+			    },'-',{
+			    	text:'修改',
+			    	iconCls:'icon-edit',
+			    	handler: function(){ 
+			    		var rows = $('#grid').datagrid('getSelections');
+						$("#edit_role_id").textbox('setValue',rows[0].role_id);
+						$("#edit_role_code").textbox('setValue',rows[0].role_code);
+						$("#edit_role_name").textbox('setValue',rows[0].role_name);
+						
+			    		$("#edit_dialog").dialog({ 
+			    			title: '修改角色',    
+							width: 400,    
+							height: 200,    
+							closed: false,    
+							modal: true,
+							buttons:[{
+								text:'保存',
+								iconCls:'icon-save',
+								handler:function(){
+									
+									
+									$('#edit_form').form('submit', {
+										 url:"/admin/roleManagement/updateRole", 
+										 success:function(response){
+											 response=JSON.parse(response);
+											 if(response.state==200){
+												   $.messager.alert('提示','修改数据'+response.data+'条');
+												   $("#edit_dialog").dialog("close");
+												   $("#grid").datagrid('reload');
+											}else{
+												   $.messager.alert('警告','操作失败');
+											}
+										 }
+									})
+								}
+							}]
+			    		});
+			    	}
+			    },'-',{
+			    	text:'配置菜单',
+			    	handler: function(){
+			    		$("#config_menu_dialog").dialog({
+			    			title: '菜单配置',    
+							width: 400,    
+							height: 200,    
+							modal: true
+			    		});
+			    		var rows = $('#grid').datagrid('getSelections');
+						
+			    		$("#menu_tree").tree({    
+			    		    url:'/admin/roleManagement/getMenusByRoleCode?role_code='+ rows[0].role_code,  
+			    		    onContextMenu: function(e, node){
+			    		    	//alert(node.attributes);
+			    				e.preventDefault();
+			    				// 查找节点
+			    				$('#tt').tree('select', node.target);
+			    				// 显示快捷菜单
+			    				$('#tree_right_menu').menu('show', {
+			    					left: e.pageX,
+			    					top: e.pageY
+			    				});
+
+			    			}
+
+			    		});  
+
+			    	} 
 			    }]
+
 			});
 			
 		
-					
-			//修改按钮绑定事件
-			$("#edit_user").click(function(){
-				var rows = $('#grid').datagrid('getSelections');
-				$("#edit_user_id").textbox("setValue",rows[0].user_id);
-				$("#edit_user_code").textbox("setValue",rows[0].user_code);
-				$("#edit_user_name").textbox("setValue",rows[0].user_name);
-				$("#edit_is_stop").combobox("setValue",rows[0].is_stop);
-				$("#edit_dialog").dialog({    
-					title: '修改用户',    
-					width: 400,    
-					height: 200,    
-					closed: false,    
-					cache: false,
-					modal: true,
-					buttons:[{
-						text:'保存',
-						iconCls:'icon-edit',
-						handler:function(){
-							$('#edit_form').form('submit', {    
-								url:"/admin/userManagement/updateUser",   
-								success:function(response){   
-									response=JSON.parse(response);
-									if(response.state==200){
-										if(response.data==1){
-											 $("#edit_dialog").dialog("close");
-											 $("#grid").datagrid('reload');
-										}else{
-											  $.messager.alert('提示','修改失败');
-										}
-								   }else{
-									   $.messager.alert('警告','操作失败');
-								   }   
-								}    
-							});
-						}
-					}]
-				});  
-			});
-				
-			$("#send_role_btn").click(function(){
-				 $.messager.alert('提示','分配角色');
-				
-			});
-			
-					
 		});
 			
 		</script>
@@ -129,6 +151,7 @@
 		<div region="center" border="false">
 			<table id="grid" ></table>
 		</div>
+
 
 		<!-- 一些隐藏的对话框 -->
 		<!-- 新增角色页 -->
@@ -160,13 +183,13 @@
 						<div style="display:none">
 							<input class="easyui-textbox" id="edit_role_id"  name="role_id" style="width:200px"  />
 						</div>
-						<td align="right" width="20%">用户编码:</td>
+						<td align="right" width="20%">角色编码:</td>
 						<td width="20%"  align="left" >
 							<input class="easyui-textbox" id="edit_role_code"  name="role_code" style="width:200px"  />
 						</td>
 					<tr>
 					</tr>
-						<td align="right" width="20%">用户姓名:</td>
+						<td align="right" width="20%">角色名称:</td>
 						<td width="20%"  align="left">
 							<input class="easyui-textbox" id="edit_role_name"  name="role_name" style="width:200px" />
 						</td>
@@ -177,5 +200,17 @@
 			</form>
 		</div> 
 
+		<!-- 角色菜单配置页 -->
+		<div style="display:none" id="config_menu_dialog">
+			<ul id="menu_tree"></ul>  
+		
+		</div>
+		
+		<div id="tree_right_menu" class="easyui-menu" style="width:120px;">
+			<div onclick="addSubNode()" data-options="iconCls:'icon-add'">添加子节点</div>
+			<div onclick="addSubPage()" data-options="iconCls:'icon-add'">添加子页面</div>
+			<div onclick="remove()" data-options="iconCls:'icon-remove'">移除当前</div>
+		</div>
+		
 	</body>
 </html>

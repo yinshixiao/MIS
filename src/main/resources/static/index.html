@@ -26,6 +26,7 @@
 									data:response.data,    
 								    valueField:'roleCode',    
 								    textField:'roleName',
+								    panelHeight:'auto',
 								    onSelect:function(record){
 								    	$.post("/login/selectRole",{roleCode:record.roleCode},function(result){
 								    	   	if(result.state==200){
@@ -75,7 +76,7 @@
 			</div>
 			
 			<div id="dlg" class="easyui-dialog" title="选择角色" data-options="iconCls:'icon-save'" style="width:400px;height:200px;padding:10px">
-				<select class="easyui-combobox" id="roleSelect"  name ="roleSelect"  label="选择角色" style="width:100%">
+				<select class="easyui-combobox"  id="roleSelect"  name ="roleSelect"  label="选择角色" style="width:100%">
 				</select>
 			</div>
 			
